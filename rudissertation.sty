@@ -1,0 +1,310 @@
+%% ---------------------------------------------------------------------------------------------
+%% LaTeX Base Package Reykjavík University PhD Dissertations,
+%% ---------------------------------------------------------------------------------------------
+%% Original Author: Bjórn Þór Jónsson (bjorn AT ru.is)
+%% Refactored/Simplified on 2020-02-03: Joseph Timothy Foley <foley AT ru.is>
+%% Questions, comments, complaints: latex@RU.IS
+%% Created on 2020-02-03
+%% This code is distributed under the MIT license
+%% Details at LICENSE.md
+%% --------------- Identification ----------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{rudissertation}[2024/11/15 RU Thesis Formatting V3.2]
+%% --------------- Option Processing--------------------------
+%% The forcegraphics option renders graphics even in draft mode
+\DeclareOption{forcegraphics}{%
+  \PassOptionsToPackage{final}{graphicx}
+  \PassOptionsToPackage{final}{pdfpages}
+  \PassOptionsToPackage{final}{hyperref}
+  %% add any other elements that should be included in draft
+  \finalifforcegraphics{graphicx}%We have to catch graphicx early
+  \typeout{rudissertation option: forcegraphics}%
+}%
+
+%%% Memoir test: Memoir Manual 21.2 p.367
+%% Only works with the memoir class!!!!!!!!!!!!!!!
+\@ifclassloaded{memoir}{\let\endrudissertation\relax}{\let\endrudissertation\endinput
+\PackageError{rudissertation}{The rudissertation package only works with the memoir class}%
+{\@ehd}}
+\endrudissertation
+%%---------------- Execution of Options -----------------------------
+\ProcessOptions\relax% this stops searching for a * in \ProcessOptions*
+%% Read page 20 of http://latex-project.org/guides/clsguide.pdf
+%% carefully before modifying any of the execution and previous section.
+%% ---------------- Package Loading -----------------------------
+
+
+%% ---------------- Internationalization -----------------------------
+% Font setup
+% Standardized STIX2 fonts that print well, display on
+% e-readers/screens clearly, and have compatible licensing
+% requirements
+% allows UTF encoding, needed for Icelandic and other accented characters
+\RequirePackage{unicode-math}% loads STIX and math unicode characters
+\setmathfont{STIX Two Math}
+\setmainfont{STIX Two Text}[
+Extension={.otf},
+UprightFont={*-Regular},
+BoldFont={*-Bold},
+ItalicFont={*-Italic},
+BoldItalicFont={*-BoldItalic}]
+
+%% ---------------- Graphics ------------------------------
+\RequirePackage{graphicx}
+%% GraphicsX converts and includes graphics intelligently which is needed for jpg, png, etc.
+
+%% ---------------- URLs and Paths -----------------------------
+\PassOptionsToPackage{obeyspaces,spaces,hyphens,allowmove}{url}
+\RequirePackage{xurl}
+%% The xurl package typesets \url{} and unix file \path{} nicely.
+%% Watch out that you leave a space after a last \ e.g. \path{C:\ }
+%% Warning:  allowmove makes URLs not-fragile, so they can go in things that move
+%%           If this breaks you will get very very weird errors
+
+%% ---------------- Main Code -----------------------------
+%%  Remember that we can declare commands (to make fragile things safe)
+%%  The * form is for ``short'' commands, not longer than a paragraph
+%%       \DeclareRobustCommand{cmd}[num][default]{definition}
+%%       \DeclareRobustCommand*{cmd}[num][default]{definition}
+%%  For checking if commands are redefined
+%%       \CheckCommand{cmd}[num][default]{definition}
+
+%% Comprehensive list of styles for memoir is in 7.2 (page 106)
+%% If you need to adjust the style on the chapters, modify chapter
+%% predefined styles:
+%% empty: no header nor footer
+%% plain: page num in bot center
+%% simple:  pagenum and marks on top outer edges
+%\makeoddhead{chapter}{}{}{} %to change only one side
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Memoir titlepage definition and info at p.64
+\renewcommand{\pretitle}{\begin{center}}%
+\renewcommand{\posttitle}{\par\end{center}}
+
+% \renewcommand{\maketitlehookb}{\begin{center}\titletextfont{}by\end{center}\vspace{1mm}}
+% 1mm adjustment to center the "by".   I've disabled it because I think the "by" looks unprofessional.
+
+\renewcommand{\preauthor}{\begin{center}\large\par}
+\renewcommand{\postauthor}{\par\end{center}}
+\newcommand{\titledetails}[1]{\renewcommand{\maketitlehookc}{#1}}
+\renewcommand{\predate}{\begin{center}\large}
+\renewcommand{\postdate}{\par\end{center}}
+\aliaspagestyle{title}{empty}
+\aliaspagestyle{titlinpage}{empty}  
+%% ----- COPYRIGHT PAGE -----------------------------------------------------------------------
+\RequirePackage{ccicons}% need for copyright \textcopyright{}
+\hyphenation{Non-Com-mercial}
+\newcommand{\copyrightpage}[1]{
+  % actually in books, this is often on the left side
+  \begin{coverleft}
+    \begin{vplace}[1.0] % ratio of space above and below
+      \setlength{\parskip}{\baselineskip}%without indents, we need blank line separators
+      \begin{flushleft}
+        #1
+        Copyright \textcopyright{} \the\year{} \theauthor{} \ccbyncnd{}
+      \end{flushleft}
+      This document is licensed under a Creative Commons Attribution 4.0 (CC BY-NC-SA) (\url{http://creativecommons.org/licenses/by-nc-nd/4.0/}) license.
+However, this license does not cover the Reykjavik University logo (word- and figurative mark).
+The Reykjavik University logo is a registered trademark and remains the intellectual property of Reykjavik University.
+Any reuse, redistribution, or modification of the Reykjavik University logo is strictly prohibited without explicit written permission from Reykjavik University.
+
+You may copy and redistribute the material in any medium or format, provide appropriate credit, link to the license and indicate what changes you made.
+You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+You may not use the material for commercial purposes.
+If you remix, transform or build upon the material, you may not distribute the modified material.
+
+The images or other third party material in this thesis are included in the book's Creative Commons license, unless indicated otherwise in a credit line to the material.
+If material is not included in the book's Creative Commons license and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder.
+The use of general descriptive names, registered names, trademarks, service marks, etc.
+in this publication does not imply, even in the absence of a specific statement that such names are exempt from the relevant protective laws and regulations and therefore free for general use.
+    \end{vplace}
+  \end{coverleft}
+  \clearpage
+}
+
+%% ---------- Page Styles --------------------------------------------------------------
+%% ---------------------------------------------------------------------------------------------
+%%  Setup the formatting at the beginning of the document (Front material)
+%%  See Memoir documentation, page 73
+
+%%%%%%%%% PARAGRAPH ADJUSTMENTS %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\savedparindent}
+\newcommand{\disableindents}{\setlength{\parindent}{0pt}}
+\newcommand{\enableindents}{\setlength{\parindent}{\savedparindent}}
+
+\AtBeginDocument{
+  \frontmatter
+  \setlength{\savedparindent}{\parindent}  % save the current parindent
+  \SingleSpacing%
+}
+
+%% Disable clearforchapter on formats that do not need blank pages
+%\renewcommand{\clearforchapter}{\newpage}
+% waste less blank pages in draft mode
+% see p123 http://ctan.uib.no/macros/latex/contrib/memoir/memman.pdf
+
+\newenvironment{cover}% commonalities for the cover material
+{  \clearforchapter%
+  \thispagestyle{cover}%
+  \disableindents%
+  \SingleSpacing}%
+{%\setlength{\TPMargin}{0mm} %% margins inside the textblock
+  %% I don't remember why we need to mess with \TPmargin
+  %% Might be OK to remove --foley
+  \enableindents{}}%
+\newenvironment{coverleft}% material that must be on the even (back) side
+{  \cleartoverso%
+  \thispagestyle{cover}%
+  \disableindents%
+  \SingleSpacing}%
+{\enableindents{}}%
+% \newenvironment{coveranyside}%This is material that can start on even or odd
+% {  \clearpage%
+%   \thispagestyle{cover}%
+%   \disableindents%
+%   \SingleSpacing}%
+% {\enableindents{}}%
+
+
+
+%% ----- DEDICATIONS ---------- ---------------------------------------------------------------
+\newenvironment{dedications}{\begin{cover}\begin{vplace}[0.33]% ratio of space above and below
+      \begin{center}\em}
+      {\end{center}\normalfont\end{vplace}\end{cover}}
+
+%%% Page styles Memoir Manual ch7.2 p109 
+\aliaspagestyle{book}{simple}
+\aliaspagestyle{chapter}{plain}%At the beginning we want page numbers on chapters
+\aliaspagestyle{cleared}{simple}
+\aliaspagestyle{part}{empty}
+
+\makepagestyle{plain}% Just page numbers in corners
+\makeevenhead{plain}{\thepage}{}{}
+\makeoddhead{plain}{}{}{\thepage}
+
+\makepagestyle{cover}% The cover pages have no page numbers
+\makeoddfoot{cover}{}{}{}
+\makeevenfoot{cover}{}{}{}
+
+\newcommand{\frontmatterhead}[1]{{%based upon \chapterhead from memman.pdf p.84
+    % \clearpage% move to correct page
+    \disableindents%
+    \thispagestyle{chapter} % set the page style
+    \insertchapterspace% space between previous and the title
+    \chapterheadstart%\beforchapskip space before heading
+    \printchaptertitle{#1}% title
+    \addcontentsline{toc}{chapter}{#1}
+    \afterchaptertitle% \afterchapskip space after title
+}}
+
+%%% Section numbering and the Table of Contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%55
+\maxsecnumdepth{subsubsection}  % default by \mainmatter in preamble
+\maxtocdepth{subsubsection}  % default by \mainmatter in preamble
+
+%%% Code to include files if they exist
+\newcommand{\InputIfExists}[1]{\IfFileExists{#1}{\input{#1}}{}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TWEAKS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+%% Some adjustments to float placement
+\setcounter{topnumber}{5} \def\topfraction{1} \setcounter{bottomnumber}{4}
+\def\bottomfraction{1} \setcounter{totalnumber}{10} \def\textfraction{0}
+\def\floatpagefraction{.5}
+
+%% Penalties for various text placement issues
+%% They can cause strange paragraph spacing on some pages
+%% Disabling for now --foley
+%\clubpenalty=10000%% orphan lines
+%\widowpenalty=10000%% widow lines
+%\hfuzz=1pt%% avoid overfilled hboxes
+%\vfuzz=5pt%% avoid overfilled vboxes
+\raggedbottom{}
+%% Vertical justification is the default.
+%% This causes problems on some pages with figures or chapter headings
+%% Allowing ragged bottoms keeps the spacing consistent between paragraphs
+%% Alternatively:  \setlength{\parskip}{0pt}
+
+%% Information about Institution, Author, Degree, and Program
+\newcommand{\theInstitution}{Reykjav\'{\i}k University}%
+\newcommand{\theDocumentType}{Dissertation}
+\newcommand{\theDegreeAbbrv}{Ph.D.}
+\newcommand{\theDegreeLong}{Doctorate}
+\newcommand{\theProgram}{\LaTeX{} Magic}
+\newcommand{\theECTS}{30}
+\newcommand{\theSchool}{School of Awesomeness}
+\newcommand{\DocumentInfo}[6]{
+  \renewcommand{\theDocumentType}{#1}
+  \renewcommand{\theDegreeAbbrv}{#2}
+  \renewcommand{\theDegreeLong}{#3}
+  \renewcommand{\theProgram}{#4}
+  \renewcommand{\theECTS}{#5}
+  % ECTS Only applicable on BSc. and MSc.
+  % Leave blank
+  \renewcommand{\theSchool}{#6}
+}
+
+\newcommand{\supervisors@rudissertation}{\item No Advisor}
+\newcommand{\Supervisors}[1]{\renewcommand{\supervisors@rudissertation}[1]{#1}}
+\newcommand{\supervisorheading@rudissertation}{Supervisor}
+\newcommand{\SupervisorHeading}[1]{\renewcommand{\supervisorheading@rudissertation}{#1}}
+
+\newcommand{\examiners@rudissertation}{\item No Examiner}
+\newcommand{\Examiners}[1]{\renewcommand{\examiners@rudissertation}[1]{#1}}
+\newcommand{\examinerheading@rudissertation}{Examiner}
+\newcommand{\ExaminerHeading}[1]{\renewcommand{\examinerheading@rudissertation}{#1}}
+
+\newcommand{\personinfo}[5]{
+\item[]  #1, #2\\#3, #4, #5 %Stub to be customized later
+}
+
+
+%% Clean up some formatting for the text
+\renewcommand{\thepage}{\roman{page}}
+
+%% Footnote adjustments. These are mostly unnecessary
+% \let\footnoterule\relax \null % Turn off the footnote rule line
+%\renewcommand{\thefootnote}{\scriptsize\arabic{footnote}} %to fix large footnote text errors in some documents
+
+\renewcommand{\bibname}{Bibliography} %Renaming the bibliography section (if omitted it will be named "references")
+  
+%% ----- INTERNAL TITLE PAGE WITH COMMITTEE ---------------------------------------------------
+\newcommand{\DocumentDescription}[1]{\renewcommand{\maketitlehookc}{{\begin{center}#1\par\end{center}}}}
+
+%% maketitlehookd is after the date
+\renewcommand{\maketitlehookd}{{%
+  \vspace{2\baselineskip}
+  % change \personinfo to make the entries needed
+  % Because this is inside a command, we escape the #1 as ##1      
+  \renewcommand{\personinfo}[5]{\item[]  ##1, ##2\\##3, ##4, ##5}
+  % \setlength{\pltopsep}{0.5\baselineskip}  % first/top space
+  % \setlength{\plparsep}{0.5\baselineskip} % space between entries
+  % \setlength{\plitemsep}{0.5\baselineskip} % space between lines
+  \supervisorheading@rudissertation{}:
+  \begin{itemize}[label={}]\setlength\itemsep{\baselineskip} 
+    \supervisors@rudissertation{}
+  \end{itemize}
+}\vfill}
+
+\renewenvironment{abstract}
+{\begin{cover}{\centering%
+    {{\Large \thetitle}\\}%%
+    \vspace{\baselineskip}
+    \theauthor\\%
+    \vspace{\baselineskip}
+    \thedate\\%
+  }%
+  \enableindents{}
+  \textbf{Abstract}\par\vspace{1ex}}
+{\par\end{cover}\newpage}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main-dissertation"
+%%% TeX-engine: luatex
+%%% End:
