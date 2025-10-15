@@ -1,10 +1,7 @@
 %%%% This is the general thesis/project report template for most users
 %%%% Make sure you have lualatex installed!!! (package texlive-luaatex)
-\documentclass[showtrims, b5paper]{rubook}
-%% a4paper or b5paper:  paper stock size.
-%%     If A4, show cut lines for the printer.  If b5, no cut lines.
+\documentclass[12pt, a4paper]{memoir}
 \usepackage{ruthesis}%% RU Thesis formatting
-
 %% What language is the document in?
 %%  English must always be available for biblatex/biber to work properly
 %%  If you are doing your thesis in Icelandic switch the order
@@ -26,8 +23,6 @@
 \usepackage{biblatex-IS}%%loads Icelandic translations for things polyglossia missed
 
 %%%%%% Packages and Macros %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\usepackage{rusignaturepage}%enable this if you need \signaturepage{}
-
 \usepackage{custom}
 %% Commonly-used packages and macros are in custom.sty
 %% Put any additional packages after this line
@@ -46,10 +41,11 @@
 \usepackage{hyperref}%This must be the last package loaded
 
 %%%%%%%%%%%%%%%%%Information for the Title page %%%%%%%%%%%%%%%%% 
-
+\logo{graphics/smiley-logo}%Get RU logo and change this to point at it
 \title{Thesis and Project Report Template for \theInstitution{}}
 \author{Joseph~T.~Foley and Marcel~Kyas}
-\date{\today}%Generally this is set to the day of the defense
+\date{November, 2025}%Generally this is set to the day of the defense
+\publocation{Reykjavik, 2025}% Publisher info: Place, Year
 
 %\DocumentInfo{TYPE}{ABBREVIATION}{DEGREE}{PROGRAM}{ECTS}{School/Department}
 \DocumentInfo{Thesis}{M.Sc.}{Master of Science}{Mechatronics}{30}{Department of Engineering}
@@ -59,16 +55,13 @@
 % Change \DocumentDescription if you need a custom title or if it needs to be in Icelandic
 
 %% PhD only have Thesis Committee with roles.  Examiner is part of committee.
-\SupervisorHeading{Thesis Committee}
-\Supervisors{
-  \personinfo{Superior A. Teacher}{Supervisor}{Professor}{Reykjavik University}{Iceland}
-  \personinfo{Helpful A. Teacher}{Co-advisor}{Assistant Professor}{University of Iceland}{Iceland}
-  \personinfo{Tough E. Questions}{Examiner}{Associate Professor}{Massachusetts Institute of Technology}{USA}
-}
+\SupervisorHeading{Supervisors}
+\Supervisors{Superior A. Teacher, Ph.D. and Helpful A. Teacher, Ph.D.}
+\ExaminerHeading{Examiner}
+\Examiners{Tough E. Questions}
 
 \hyphenation{Jo-seph Fo-ley}
 % If you need to enforce hyphenation in English or Icelandic, put a space separated list in the hyphenation macro.
-
 
 \begin{document}
 %% TODO: get the official cover graphic and have the system fill in the fields for you
@@ -76,8 +69,6 @@
 \disableindents{}%frontmatter material mostly doesn't need indents
 \copyrightpage{}
 
-% If this is a PhD, register for an ISSN and ISBN, then:
-% \copyrightpage{ISSN xxxx-yyyy\\ISBN 978-xxxxxxxxxx\\\url{http://hdl.handle.net/1946/xxxx}\\}
 %\signaturepage{} %Generally only for Print copies and needs the rusignaturepage package
 
 %\begin{dedications}% Optional
@@ -95,10 +86,9 @@
 %% This list demonstrates the "siunitx" package capabilities
 \begin{tabular}{lll}\toprule
   Symbol &Description &Value/Units\\\midrule
-  $E$ &Energy &\si{\joule}\\ %New function:  \unit{} in Livetex 2021
-  $m$ &Mass &\si{\gram}\\ %New function:  \unit{} in Livetex 2021
+  $E$ &Energy &\si{\joule}\\
+  $m$ &Mass &\si{\gram}\\
   $c$ &Speed of Light &\SI{2.99E9}{\meter\per\square\second}\\\bottomrule
-  % New function:  \qty{} in Livetex 2021
 \end{tabular}
 
 \enableindents{}% turn on/off paragraph indents
