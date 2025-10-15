@@ -20,7 +20,7 @@ auto/*
 *.synctex.gz
 *.toc
 *.xdv
-/main.pdf
+/main*.pdf
 /BSC_MSC-NAME-YEAR.pdf
 /PHD-NAME-YEAR.pdf
 /instructions.pdf
