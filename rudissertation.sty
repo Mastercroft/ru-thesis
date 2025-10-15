@@ -1,5 +1,5 @@
 %% ---------------------------------------------------------------------------------------------
-%% LaTeX Base Package Reykjavík University Theses/Dissertations/Books,
+%% LaTeX Base Package Reykjavík University PhD Dissertations,
 %% ---------------------------------------------------------------------------------------------
 %% Original Author: Bjórn Þór Jónsson (bjorn AT ru.is)
 %% Refactored/Simplified on 2020-02-03: Joseph Timothy Foley <foley AT ru.is>
@@ -9,7 +9,7 @@
 %% Details at LICENSE.md
 %% --------------- Identification ----------------------------
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{ruthesis}[2024/11/15 RU Thesis Formatting V3.2]
+\ProvidesPackage{rudissertation}[2024/11/15 RU Thesis Formatting V3.2]
 %% --------------- Option Processing--------------------------
 %% The forcegraphics option renders graphics even in draft mode
 \DeclareOption{forcegraphics}{%
@@ -18,15 +18,15 @@
   \PassOptionsToPackage{final}{hyperref}
   %% add any other elements that should be included in draft
   \finalifforcegraphics{graphicx}%We have to catch graphicx early
-  \typeout{ruthesis option: forcegraphics}%
+  \typeout{rudissertation option: forcegraphics}%
 }%
 
 %%% Memoir test: Memoir Manual 21.2 p.367
 %% Only works with the memoir class!!!!!!!!!!!!!!!
-\@ifclassloaded{memoir}{\let\endruthesis\relax}{\let\endruthesis\endinput
-\PackageError{ruthesis}{The ruthesis package only works with the memoir class}%
+\@ifclassloaded{memoir}{\let\endrudissertation\relax}{\let\endrudissertation\endinput
+\PackageError{rudissertation}{The rudissertation package only works with the memoir class}%
 {\@ehd}}
-\endruthesis
+\endrudissertation
 %%---------------- Execution of Options -----------------------------
 \ProcessOptions\relax% this stops searching for a * in \ProcessOptions*
 %% Read page 20 of http://latex-project.org/guides/clsguide.pdf
@@ -48,13 +48,6 @@ UprightFont={*-Regular},
 BoldFont={*-Bold},
 ItalicFont={*-Italic},
 BoldItalicFont={*-BoldItalic}]
-%% ---------------- Page and Margin Sizes -----------------------------
-\setxlvchars{}\setlxvchars{}
-\pageaiv{}
-\setlrmarginsandblock{25.4mm}{25.4mm}{*}
-\setulmarginsandblock{25.4mm}{25.4mm}{*}
-\setpagecc{\paperheight}{\paperwidth}{*}%page area on middle center for cutting
-\checkandfixthelayout% implement the margins if we weren't using canonic
 
 %% ---------------- Graphics ------------------------------
 \RequirePackage{graphicx}
@@ -84,129 +77,52 @@ BoldItalicFont={*-BoldItalic}]
 %% simple:  pagenum and marks on top outer edges
 %\makeoddhead{chapter}{}{}{} %to change only one side
 
-%% Information about Institution, Author, Degree, and Program
-\newcommand{\thesubtitle}{\quad}
-\newcommand{\theInstitution}{Reykjav\'{\i}k University}%
-\newcommand{\theDocumentType}{Dissertation}
-\newcommand{\theDegreeAbbrv}{Ph.D.}
-\newcommand{\theDegreeLong}{Doctorate}
-\newcommand{\theProgram}{\LaTeX{} Magic}
-\newcommand{\theECTS}{30}
-\newcommand{\theSchool}{School of Awesomeness}
-\newcommand{\DocumentInfo}[6]{
-  \renewcommand{\theDocumentType}{#1}
-  \renewcommand{\theDegreeAbbrv}{#2}
-  \renewcommand{\theDegreeLong}{#3}
-  \renewcommand{\theProgram}{#4}
-  \renewcommand{\theECTS}{#5}
-  % ECTS Only applicable on BSc. and MSc.
-  % Leave blank
-  \renewcommand{\theSchool}{#6}
-}
-
-\newcommand{\subtitle}[1]{\renewcommand{\thesubtitle}{#1}}
-\newcommand{\supervisors@ruthesis}{\item No Advisor}
-\newcommand{\Supervisors}[1]{\renewcommand{\supervisors@ruthesis}[1]{#1}}
-\newcommand{\supervisorheading@ruthesis}{Supervisor}
-\newcommand{\SupervisorHeading}[1]{\renewcommand{\supervisorheading@ruthesis}{#1}}
-
-\newcommand{\examiners@ruthesis}{\item No Examiner}
-\newcommand{\Examiners}[1]{\renewcommand{\examiners@ruthesis}[1]{#1}}
-\newcommand{\examinerheading@ruthesis}{Examiner}
-\newcommand{\ExaminerHeading}[1]{\renewcommand{\examinerheading@ruthesis}{#1}}
-
-\newcommand{\docdesc@ruthesis}{\theDocumentType{} of \theECTS{} ECTS credits
-    submitted to the \theSchool{} at \theInstitution{} in partial fulfillment
-    of the requirements for the degree of \theDegreeLong}
-\newcommand{\DocumentDescription}[1]{\renewcommand{\docdesc@ruthesis}{#1}}%nop for now
-\newcommand{\pubplaceyear@ruthesis}{Reykjavik, 2025}
-\newcommand{\publocation}[1]{\renewcommand{\pubplaceyear@ruthesis}{#1}}
-\newcommand{\logo@ruthesis}{graphics/smiley-logo}
-\newcommand{\logo}[1]{\renewcommand{\logo@ruthesis}{#1}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% TITLE PAGE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Memoir titlepage definition and info at p.64
-%% \title is ignoring formatting for reasons I don't understand
-\renewcommand{\maketitlehooka}{
-  \begin{center}
-    \includegraphics[width=0.3\textwidth]{\logo@ruthesis}
-    \par\end{center}\vspace{0.7cm}
-}
-%% TODO: investigate why bold isn't working on the title
-%\droptitle{}% length moves the title position up and down
-\pretitle{\begin{center}\bfseries\Huge}
-\posttitle{\par\end{center}\vspace{1.55cm}}
-\preauthor{\begin{center}\Large}
-\postauthor{\par\end{center}\vfill}
-\renewcommand{\maketitlehookc}{\begin{center}\textbf{\Large \theDegreeAbbrv{} \theDocumentType{} in \theProgram}\par\end{center}\vspace{1cm}}
-\predate{\begin{center}\large Graduation }
-\postdate{\par\end{center}\vspace*{0.4cm}}
-\renewcommand{\maketitlehookd}{\begin{center}
-  \textbf{{\Large \theSchool}}\par\end{center}
-}
+\renewcommand{\pretitle}{\begin{center}}%
+\renewcommand{\posttitle}{\par\end{center}}
+
+% \renewcommand{\maketitlehookb}{\begin{center}\titletextfont{}by\end{center}\vspace{1mm}}
+% 1mm adjustment to center the "by".   I've disabled it because I think the "by" looks unprofessional.
+
+\renewcommand{\preauthor}{\begin{center}\large\par}
+\renewcommand{\postauthor}{\par\end{center}}
+\newcommand{\titledetails}[1]{\renewcommand{\maketitlehookc}{#1}}
+\renewcommand{\predate}{\begin{center}\large}
+\renewcommand{\postdate}{\par\end{center}}
 \aliaspagestyle{title}{empty}
-
+\aliaspagestyle{titlinpage}{empty}  
 %% ----- COPYRIGHT PAGE -----------------------------------------------------------------------
-\RequirePackage{ccicons}
-\RequirePackage{orcidlink}
-\PassOptionsToPackage{hidelinks, bookmarks=true, breaklinks=true}{hyperref}
-
-\newcommand{\copyrightpage}[6]{
+\RequirePackage{ccicons}% need for copyright \textcopyright{}
+\hyphenation{Non-Com-mercial}
+\newcommand{\copyrightpage}[1]{
   % actually in books, this is often on the left side
   \begin{coverleft}
     \begin{vplace}[1.0] % ratio of space above and below
+      \setlength{\parskip}{\baselineskip}%without indents, we need blank line separators
       \begin{flushleft}
-        \thetitle \\[\baselineskip]
-        Short title: #1\\
-	          \theauthor\ \orcidlink{#2} (ORCID iD #2)\\[\baselineskip]
-	      Copyright \textcopyright{} \the\year{} \ccbyncnd \\
+        #1
+        Copyright \textcopyright{} \the\year{} \theauthor{} \ccbyncnd{}
       \end{flushleft}
-      This work is licensed under the \href{http://creativecommons.org/licenses/by-nc-nd/4.0/}{Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License}.
-      You may copy and redistribute the material in any medium or format, provide appropriate credit, link to the license and indicate what changes you made. 
-      You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
-      You may not use the material for commercial purposes.
-      If you remix, transform or build upon the material, you may not distribute the modified material.
-      The images or other third party material in this thesis are included in the book's Creative Commons license, unless indicated otherwise in a credit line to the material.
-      If material is not included in the book's Creative Commons license and your intended use is not permitted by statutory regulation or exceeds the permitted use,
-       you will need to obtain permission directly from the copyright holder.
-      The use of general descriptive names, registered names, trademarks, service marks, etc. in this publication does not imply,
-       even in the absence of a specific statement that such names are exempt from the relevant protective laws and regulations and therefore free for general use.
+      This document is licensed under a Creative Commons Attribution 4.0 (CC BY-NC-SA) (\url{http://creativecommons.org/licenses/by-nc-nd/4.0/}) license.
+However, this license does not cover the Reykjavik University logo (word- and figurative mark).
+The Reykjavik University logo is a registered trademark and remains the intellectual property of Reykjavik University.
+Any reuse, redistribution, or modification of the Reykjavik University logo is strictly prohibited without explicit written permission from Reykjavik University.
+
+You may copy and redistribute the material in any medium or format, provide appropriate credit, link to the license and indicate what changes you made.
+You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+You may not use the material for commercial purposes.
+If you remix, transform or build upon the material, you may not distribute the modified material.
+
+The images or other third party material in this thesis are included in the book's Creative Commons license, unless indicated otherwise in a credit line to the material.
+If material is not included in the book's Creative Commons license and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder.
+The use of general descriptive names, registered names, trademarks, service marks, etc.
+in this publication does not imply, even in the absence of a specific statement that such names are exempt from the relevant protective laws and regulations and therefore free for general use.
     \end{vplace}
-    \begin{flushleft}
-      
-    
-    Bibliographic information:
-    \theauthor{}, \the\year{}, \textit{\thetitle{}}, \theDegreeAbbrv{} \theDocumentType{}, \theSchool{}, \theInstitution{}, #3 pp.\\
-    \vspace*{1\baselineskip}
-    #4 \\
-    \vspace*{1\baselineskip}
-    % \begin{figure}[h!]
-    %   \includegraphics[scale=0.5]{graphics/Printer_Logo.svg}
-    % \end{figure}
-    #5\\
-    #6\\
-  \end{flushleft}
-    \vfill
-    \vspace*{2\baselineskip}
   \end{coverleft}
   \clearpage
 }
-
-% %% names moved to inside cover
-%   % change \personinfo to make the entries needed
-%   % Because this is inside a command, we escape the #1 as ##1      
-%   \renewcommand{\personinfo}[5]{\item[]  ##1, ##2\\##3, ##4, ##5}
-%   % \setlength{\pltopsep}{0.5\baselineskip}  % first/top space
-%   % \setlength{\plparsep}{0.5\baselineskip} % space between entries
-%   % \setlength{\plitemsep}{0.5\baselineskip} % space between lines
-%   \begin{itemize}[label={}]
-%   \item \supervisorheading@ruthesis{}:
-%     \begin{itemize}[label={}]\setlength\itemsep{\baselineskip} 
-%       \supervisors@ruthesis{}
-%     \end{itemize}
-%   \end{itemize}
-% }\vfill}
-
 
 %% ---------- Page Styles --------------------------------------------------------------
 %% ---------------------------------------------------------------------------------------------
@@ -313,6 +229,38 @@ BoldItalicFont={*-BoldItalic}]
 %% Allowing ragged bottoms keeps the spacing consistent between paragraphs
 %% Alternatively:  \setlength{\parskip}{0pt}
 
+%% Information about Institution, Author, Degree, and Program
+\newcommand{\theInstitution}{Reykjav\'{\i}k University}%
+\newcommand{\theDocumentType}{Dissertation}
+\newcommand{\theDegreeAbbrv}{Ph.D.}
+\newcommand{\theDegreeLong}{Doctorate}
+\newcommand{\theProgram}{\LaTeX{} Magic}
+\newcommand{\theECTS}{30}
+\newcommand{\theSchool}{School of Awesomeness}
+\newcommand{\DocumentInfo}[6]{
+  \renewcommand{\theDocumentType}{#1}
+  \renewcommand{\theDegreeAbbrv}{#2}
+  \renewcommand{\theDegreeLong}{#3}
+  \renewcommand{\theProgram}{#4}
+  \renewcommand{\theECTS}{#5}
+  % ECTS Only applicable on BSc. and MSc.
+  % Leave blank
+  \renewcommand{\theSchool}{#6}
+}
+
+\newcommand{\supervisors@rudissertation}{\item No Advisor}
+\newcommand{\Supervisors}[1]{\renewcommand{\supervisors@rudissertation}[1]{#1}}
+\newcommand{\supervisorheading@rudissertation}{Supervisor}
+\newcommand{\SupervisorHeading}[1]{\renewcommand{\supervisorheading@rudissertation}{#1}}
+
+\newcommand{\examiners@rudissertation}{\item No Examiner}
+\newcommand{\Examiners}[1]{\renewcommand{\examiners@rudissertation}[1]{#1}}
+\newcommand{\examinerheading@rudissertation}{Examiner}
+\newcommand{\ExaminerHeading}[1]{\renewcommand{\examinerheading@rudissertation}{#1}}
+
+\newcommand{\personinfo}[5]{
+\item[]  #1, #2\\#3, #4, #5 %Stub to be customized later
+}
 
 
 %% Clean up some formatting for the text
@@ -324,10 +272,27 @@ BoldItalicFont={*-BoldItalic}]
 
 \renewcommand{\bibname}{Bibliography} %Renaming the bibliography section (if omitted it will be named "references")
   
+%% ----- INTERNAL TITLE PAGE WITH COMMITTEE ---------------------------------------------------
+\newcommand{\DocumentDescription}[1]{\renewcommand{\maketitlehookc}{{\begin{center}#1\par\end{center}}}}
+
+%% maketitlehookd is after the date
+\renewcommand{\maketitlehookd}{{%
+  \vspace{2\baselineskip}
+  % change \personinfo to make the entries needed
+  % Because this is inside a command, we escape the #1 as ##1      
+  \renewcommand{\personinfo}[5]{\item[]  ##1, ##2\\##3, ##4, ##5}
+  % \setlength{\pltopsep}{0.5\baselineskip}  % first/top space
+  % \setlength{\plparsep}{0.5\baselineskip} % space between entries
+  % \setlength{\plitemsep}{0.5\baselineskip} % space between lines
+  \supervisorheading@rudissertation{}:
+  \begin{itemize}[label={}]\setlength\itemsep{\baselineskip} 
+    \supervisors@rudissertation{}
+  \end{itemize}
+}\vfill}
 
 \renewenvironment{abstract}
 {\begin{cover}{\centering%
-    {{\Large \@title}\\}%%
+    {{\Large \thetitle}\\}%%
     \vspace{\baselineskip}
     \theauthor\\%
     \vspace{\baselineskip}
@@ -338,25 +303,8 @@ BoldItalicFont={*-BoldItalic}]
 {\par\end{cover}\newpage}
 
 
-%%% from the old cs template, if so desired
-%\makepagestyle{oldstyle}
-%\makeoddhead{oldstyle}{\footnotesize{\authorHeader@ruthesis}}{}{\footnotesize{\thepage}}
-%\makeevenhead{oldstyle}{\footnotesize{\thepage}}{}{\footnotesize{\thetitle}}
-
-%%%%%%%%%% Metadata for pdf file %%%%%%%%%%%%%%%%%%%%%%
-\AddToHook{beforedocument/before}{%
-  %% package hyperref needs to be last, so we use a hook
-  \PassOptionsToPackage{hidelinks}{hyperref}%disable boxes around links
-  \RequirePackage{hyperref}
-  \hypersetup{
-    pdfauthor   = {\theauthor{}},
-    pdftitle    = {\thetitle},
-    %pdfsubject  = {Templates},
-    %pdfkeywords = {\theInstitution{}, Template, Thesis}
-  }
-}
 %%% Local Variables:
 %%% mode: latex
-%%% TeX-master: "main"
+%%% TeX-master: "main-dissertation"
 %%% TeX-engine: luatex
 %%% End:
