@@ -338,8 +338,10 @@ in this publication does not imply, even in the absence of a specific statement 
 %\makeevenhead{oldstyle}{\footnotesize{\thepage}}{}{\footnotesize{\thetitle}}
 
 %%%%%%%%%% Metadata for pdf file %%%%%%%%%%%%%%%%%%%%%%
-\RequirePackage{hyperref}
-\AtBeginDocument{
+\AddToHook{beforedocument/before}{%
+  %% package hyperref needs to be last, so we use a hook
+  \PassOptionsToPackage{hidelinks}{hyperref}%disable boxes around links
+  \RequirePackage{hyperref}
   \hypersetup{
     pdfauthor   = {\theauthor{}},
     pdftitle    = {\thetitle},
